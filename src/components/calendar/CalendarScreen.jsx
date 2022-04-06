@@ -6,9 +6,13 @@ import { CalendarModal } from './CalendarModal';
 import { Navbar } from '../ui/Navbar'
 import { messages } from '../../helpers/calendar-messages-es';
 
+import { useDispatch } from 'react-redux';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import 'moment/locale/es';
+import { uiCloseModal, uiOpenModal } from '../../actions/ui';
+
 
 moment.locale('es');
 
@@ -29,13 +33,16 @@ const events = [{
 
 export const CalendarScreen = () => {
 
+  // useDispatch para ejecutar las acciones
+  const dispatch = useDispatch();
+
   const [ view, setView ] = useState(
     localStorage.getItem('lastView') || 'month'
   );
 
   // eventos para gestionar el double click y seleccion de evento
   const onDoubleClick = (e) => {
-    console.log(e);
+    dispatch(uiOpenModal());  
   }
 
   const onSelectEvent = (e) => {
