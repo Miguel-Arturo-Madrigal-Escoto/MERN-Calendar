@@ -4,6 +4,7 @@ import { CalendarApp } from './CalendarApp';
 
 import './css/styles.css';
 
+
 render(
   <CalendarApp />,
   document.getElementById('root')

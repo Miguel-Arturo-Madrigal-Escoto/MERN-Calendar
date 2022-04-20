@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
@@ -10,33 +10,50 @@ import { AiFillSave } from 'react-icons/ai'
 import moment from 'moment';
 import '../../css/modal.css';
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew, eventSetActive, eventUpdated } from '../../actions/calendar';
 
 Modal.setAppElement('#root');
 
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const nowPlusOne = now.clone().add(1, 'hours');
+const initEvent = {
+    title: '',
+    start: now.toDate(),
+    end: nowPlusOne.toDate(),
+    notes: ''
+}
 
 export const CalendarModal = () => {
 
     // useDispatch para ejecutar las acciones
     const dispatch = useDispatch();
+    // useSelector para obtener los datos del state
+    const { activeEvent } = useSelector(state => state.calendar);
 
     // useSelector para obtener los datos del store
     const { modalOpen } = useSelector(state => state.ui);
 
-    const [ dateStart, setDateStart ] = useState(now.toDate());
-    const [ dateEnd , setEndStart ] = useState(nowPlusOne.toDate());
+    const [ , setDateStart ] = useState(now.toDate());
+    const [ , setEndStart ] = useState(nowPlusOne.toDate());
     const [ isTitleValid, setIsTitleValid ] = useState(true);
-    const [ formValues, setFormValues ] = useState({
-        title: 'Evento',
-        notes: '',
-        start: now.toDate(),
-        end: nowPlusOne.toDate(),
-    });
+    const [ formValues, setFormValues ] = useState(initEvent);
     const { title, notes, start, end } = formValues; 
+    
+    useEffect(() => {
+        
+        if (activeEvent){
+            setFormValues(activeEvent);
+        } else {
+            setFormValues(initEvent);
+        }
+        
+    }, [ activeEvent, setFormValues ]);
+    
 
     const closeModal = () => {
+        dispatch(eventSetActive(null));
         dispatch(uiCloseModal());
+        setFormValues(initEvent);
     }
 
     const handleStartDateChange = (e) => {
@@ -86,7 +103,19 @@ export const CalendarModal = () => {
         }
 
         //TODO: guardar nota en la base de datos
-
+        if (!activeEvent) {
+            dispatch(eventAddNew({
+                ...formValues,
+                id: new Date().getTime(),
+                user: {
+                    _id: '123',
+                    name: 'Mike'
+                }
+            }));
+        } else {
+            dispatch(eventUpdated(formValues));
+        }
+        
         setIsTitleValid(true);
         closeModal();
 
@@ -96,14 +125,21 @@ export const CalendarModal = () => {
     return (
         <Modal
             isOpen={ modalOpen }
-            //onAfterOpen={ onDoubleClick}
+            // onAfterOpen={ closed => console.log('Modal abierto') }
             onRequestClose={ closeModal }   // para cerrar el modal
             style={ customStyles }      // estilos personalizados
             className="modal"       // clase modal con estilos
             overlayClassName="modal-fondo"  // clase para el fondo de atras el modal
             closeTimeoutMS={ 200 }          // tiempo para cerrar el modal
         >
-            <h2> Nuevo evento </h2>
+            <h2>
+                {
+                    (activeEvent) 
+                    ? 
+                    (activeEvent.title !== '' && activeEvent.notes !== '') ? 'Editar evento' : 'Nuevo evento'
+                    : 'Nuevo evento'
+                }
+            </h2>
             <hr />
             <form 
                 className="container"
@@ -113,7 +149,7 @@ export const CalendarModal = () => {
                 <div className="form-group">
                     <label>Fecha y hora inicio</label>
                     <DateTimePicker 
-                        value={ dateStart } 
+                        value={ start } 
                         className="form-control"
                         format="y-MM-dd h:mm:ss a"
                         amPmAriaLabel="Select am/pm"    //  mostrar am/pm
@@ -125,7 +161,7 @@ export const CalendarModal = () => {
                 <div className="form-group">
                     <label>Fecha y hora fin</label>
                     <DateTimePicker 
-                        value={ dateEnd } 
+                        value={ end }  
                         className="form-control"
                         format="y-MM-dd h:mm:ss a"
                         amPmAriaLabel="Select am/pm"
@@ -143,7 +179,7 @@ export const CalendarModal = () => {
                         placeholder="Título del evento"
                         name="title"
                         autoComplete="off"
-                        value={ title}
+                        value={ title }
                         onChange={ handleInputChange }
                     />
                     <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
