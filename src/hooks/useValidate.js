@@ -28,10 +28,12 @@ export const useValidate = ( initialCheckValues, initialValidationResults ) => {
             ...resultsValidate,
             rEmailValid: validator.isEmail(rEmail),
             rPasswordValid: validator.isStrongPassword(rPassword),
-            rPasswordValid2: validator.equals(rPassword, rPassword2)
-        })        
-
+            rPasswordValid2: validator.equals(rPassword, rPassword2),
+        });    
+        
+        
     }, [ checkValues ]);
+
 
     // [ datos a validar, modificar datos a validar, resultados de la validacion ]
     return [ checkValues, handleInputChange, resultsValidate ];

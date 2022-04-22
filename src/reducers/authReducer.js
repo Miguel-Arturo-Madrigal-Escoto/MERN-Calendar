@@ -1,3 +1,4 @@
+import { types } from '../types/types';
 
 const initialState = {
     checking: true,               // Al cargar la app verificar si esta autenticado (checking).
@@ -8,8 +9,12 @@ const initialState = {
 export const authReducer = (state = initialState, action) => {
 
     switch (action.type) {
-        case 'value':
-            return state;
+        case types.authLogin:
+            return {
+                ...state,
+                checking: false,
+                ...action.payload
+            }
     
         default:
             return state;

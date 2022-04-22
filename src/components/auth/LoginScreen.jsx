@@ -6,7 +6,7 @@ import { FeedbackForm } from './FeedbackForm';
 import { useDispatch } from 'react-redux';
 
 import '../../css/login.css';
-import { startLogin } from '../../actions/auth';
+import { startLogin, startRegister } from '../../actions/auth';
 
 export const LoginScreen = () => {
 
@@ -29,9 +29,16 @@ export const LoginScreen = () => {
     // Valores del register
     const { rName, rEmail, rPassword, rPassword2 } = formRegisterValues;
 
-    const handleLogin = (e) => {
+    const handleLoginSubmit = (e) => {
         e.preventDefault();
-        dispatch(startLogin(lEmail, lPassword))
+        dispatch(startLogin(lEmail, lPassword));
+    }
+
+    const handleRegisterSubmit = (e) => {
+        e.preventDefault();
+        if (rEmailValid && rPasswordValid && rPasswordValid2) {
+            dispatch(startRegister(rName, rEmail, rPassword));
+        }
     }
 
     const handleInputChange = (e) => {
@@ -44,7 +51,7 @@ export const LoginScreen = () => {
             <div className="row">
                 <div className="col-md-6 login-form-1">
                     <h3>Ingreso</h3>
-                    <form onSubmit={ handleLogin }>
+                    <form onSubmit={ handleLoginSubmit }>
                         <div className="form-group">
                             <input 
                                 type="text"
@@ -78,7 +85,7 @@ export const LoginScreen = () => {
 
                 <div className="col-md-6 login-form-2">
                     <h3>Registro</h3>
-                    <form>
+                    <form onSubmit={ handleRegisterSubmit }>
                         <div className="form-group">
                             <input
                                 type="text"

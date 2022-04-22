@@ -20,7 +20,7 @@ const initialCheckValues = {
 const initialValidationResults = {
     rEmailValid: false,
     rPasswordValid: false,
-    rPasswordValid2: false
+    rPasswordValid2: false,
 }
 
 export {
