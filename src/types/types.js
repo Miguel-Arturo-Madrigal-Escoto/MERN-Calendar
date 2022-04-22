@@ -9,7 +9,6 @@ export const types = {
     eventUpdated: '[calendar] Event updated',
     eventDeleted: '[calendar] Event deleted',
 
-    authChecking: '[auth] Checking login state',
     authCheckingFinish: '[auth] Finished checking state',
     authStartLogin: '[auth] Start login', // asincrona
     authLogin: '[auth] Login', // sincrona
