@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 
 import '../../css/login.css';
 import { startLogin, startRegister } from '../../actions/auth';
+import { GoogleAuthButton } from './GoogleAuthButton';
+import { GithubAuthButton } from './GithubAuthButton';
 
 export const LoginScreen = () => {
 
@@ -167,6 +169,15 @@ export const LoginScreen = () => {
                     </form>
                 </div>
             </div>
+            <div className="row mt-5 login-connect">
+                <div className="col">
+                    <GoogleAuthButton />
+                </div>
+                <div className="col">
+                    <GithubAuthButton />
+                </div>
+            </div>
+                
         </div>
     )
 }

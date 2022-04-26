@@ -49,3 +49,24 @@
     font-weight: 600;
     text-decoration: none;
 }
+
+.login-connect {
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-connect .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px){
+
+    .login-form-2{
+        margin-top: 80px;
+    }
+    
+}

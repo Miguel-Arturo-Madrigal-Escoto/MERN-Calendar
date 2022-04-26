@@ -6,11 +6,11 @@ import Swal from 'sweetalert2';
 import { customStyles } from '../../helpers/modal-styles';
 // icons
 import { AiFillSave } from 'react-icons/ai'
-
-import moment from 'moment';
-import '../../css/modal.css';
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventSetActive, eventUpdated } from '../../actions/calendar';
+import { eventSetActive, eventStartAddNew, eventStartUpdate } from '../../actions/calendar';
+import moment from 'moment';
+
+import '../../css/modal.css';
 
 Modal.setAppElement('#root');
 
@@ -41,8 +41,11 @@ export const CalendarModal = () => {
     
     useEffect(() => {
         
+        // si hay evento activo, settearlo al form values
         if (activeEvent){
             setFormValues(activeEvent);
+        
+        // si no, dejarlo en los valores por defecto
         } else {
             setFormValues(initEvent);
         }
@@ -104,16 +107,15 @@ export const CalendarModal = () => {
 
         //TODO: guardar nota en la base de datos
         if (!activeEvent) {
-            dispatch(eventAddNew({
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '123',
-                    name: 'Mike'
-                }
-            }));
-        } else {
-            dispatch(eventUpdated(formValues));
+            dispatch(eventStartAddNew(formValues));
+        } 
+        
+        else if (activeEvent.title === '' && activeEvent.notes === '') {
+            dispatch(eventStartAddNew(formValues));
+        }
+        
+        else {
+            dispatch(eventStartUpdate(formValues));
         }
         
         setIsTitleValid(true);

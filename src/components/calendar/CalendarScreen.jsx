@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 
 import { CalendarEvent } from './CalendarEvent';
@@ -7,16 +7,14 @@ import { Navbar } from '../ui/Navbar'
 import { messages } from '../../helpers/calendar-messages-es';
 
 import { useDispatch, useSelector } from 'react-redux';
-
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { uiOpenModal } from '../../actions/ui';
+import { eventSetActive, eventStartLoading } from '../../actions/calendar';
+import { AddNewFab } from '../ui/AddNewFab';
+import { DeleteEventFab } from '../ui/DeleteEventFab';
 import moment from 'moment';
 import 'moment/locale/es';
-import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive } from '../../actions/calendar';
-import { AddNewFab } from '../ui/AddNewFab';
-
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../../css/calendar-screen.css';
-import { DeleteEventFab } from '../ui/DeleteEventFab';
 
 
 moment.locale('es');
@@ -44,10 +42,17 @@ export const CalendarScreen = () => {
 
   //leer del store los eventos
   const { activeEvent, events } = useSelector(state => state.calendar);
+  const { uid } = useSelector(state => state.auth);
 
   const [ view, setView ] = useState(
     localStorage.getItem('lastView') || 'month'
   );
+
+  useEffect(() => {
+
+      dispatch(eventStartLoading())
+      
+  }, [ dispatch ]);
 
   // eventos para gestionar el double click y seleccion de evento
   const onDoubleClick = (e) => {
@@ -66,8 +71,10 @@ export const CalendarScreen = () => {
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
     
+    const { _id } = event.user
+
     const style = {
-      backgroundColor: '#f0ad4e',
+      backgroundColor: (uid === _id) ? '#aee8ff' : '#e5e5e5',
       borderRadius: '0px',
       color: '#000000',
       opacity: 0.8,

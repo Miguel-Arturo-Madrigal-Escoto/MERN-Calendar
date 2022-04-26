@@ -4,10 +4,12 @@ export const types = {
     uiOpenModal: '[ui] Open modal',
     uiCloseModal: '[ui] Close modal',
 
+    eventStartAddNew: '[calendar] Start add new',
     eventAddNew: '[calendar] Add new event',
     eventSetActive: '[calendar] Set active event',
     eventUpdated: '[calendar] Event updated',
     eventDeleted: '[calendar] Event deleted',
+    eventLoaded: '[calendar] Events loaded',
 
     authCheckingFinish: '[auth] Finished checking state',
     authStartLogin: '[auth] Start login', // asincrona
