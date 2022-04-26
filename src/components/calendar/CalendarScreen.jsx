@@ -8,7 +8,7 @@ import { messages } from '../../helpers/calendar-messages-es';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive, eventStartLoading } from '../../actions/calendar';
+import { eventAllDay, eventSetActive, eventStartLoading } from '../../actions/calendar';
 import { AddNewFab } from '../ui/AddNewFab';
 import { DeleteEventFab } from '../ui/DeleteEventFab';
 import moment from 'moment';
@@ -50,7 +50,7 @@ export const CalendarScreen = () => {
 
   useEffect(() => {
 
-      dispatch(eventStartLoading())
+      dispatch(eventStartLoading());
       
   }, [ dispatch ]);
 

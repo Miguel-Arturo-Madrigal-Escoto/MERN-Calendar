@@ -69,7 +69,6 @@ const eventUpdated = (event) => ({
  
 
 
-
 export const eventStartLoading = () => {
 
     return async (dispatch) => {
@@ -101,5 +100,7 @@ export const eventSetActive = (event) => ({
     type: types.eventSetActive,
     payload: event
 });
+
+export const eventAllDay = () => ({ type: types.eventSetAllDay });
 
 export const eventDeleted = () => ({ type: types.eventDeleted });
