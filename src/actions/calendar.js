@@ -15,8 +15,9 @@ export const eventStartAddNew = (event) => {
             const resp = await fetchWithToken('events', event, 'POST');
             const body = await resp.json();
 
+
             if (body.ok){
-                event.id = body.event.id
+                event._id = body.event._id
                 event.user = {
                     _id: uid,
                     name
@@ -28,7 +29,7 @@ export const eventStartAddNew = (event) => {
         } catch (error) {
             console.log(error)
         }
-        
+
     }
 
 }
@@ -79,7 +80,7 @@ export const eventStartLoading = () => {
             const body = await resp.json();
             
             if (body.ok){
-                const events = prepareEvents(body.events)
+                const events = prepareEvents(body.events);
                 dispatch(eventLoaded(events));
             }
 

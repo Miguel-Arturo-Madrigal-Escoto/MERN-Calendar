@@ -114,12 +114,6 @@ export const startRegisterWithFirebase = () => {
             }
 
         }).catch(err => {
-            
-            Swal.fire(
-                'Ha ocurrido un error',
-                'Error al iniciar sesion',
-                'error'
-            );
 
         });
     }
@@ -218,8 +212,10 @@ const login = ( user ) => ({
 export const startLogout = () => {
     return (dispatch) => {
         const tokenLocalStorage = !!(localStorage.getItem('token') || '')
+        const tokenInitDateLocalStorage = !!(localStorage.getItem('token-init-date') || '')
         if (tokenLocalStorage){
             localStorage.removeItem('token');
+            localStorage.removeItem('token-init-date');
             dispatch(logout());
         }
     }
