@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { fetchWithoutToken, fetchWithToken } from '../helpers/fetch';
+import { fetchWithToken } from '../helpers/fetch';
 import { prepareEvents } from '../helpers/prepare-events';
 import { types } from '../types/types';
 
@@ -39,6 +39,8 @@ const eventAddNew = (event) => ({
     type: types.eventAddNew,
     payload: event
 });
+
+
 
 export const eventStartUpdate = (event) => {
     return async (dispatch) => {
@@ -97,11 +99,60 @@ const eventLoaded = (events) => ({
     payload: events
 });
 
+
+
 export const eventSetActive = (event) => ({
     type: types.eventSetActive,
     payload: event
 });
 
-export const eventAllDay = () => ({ type: types.eventSetAllDay });
 
-export const eventDeleted = () => ({ type: types.eventDeleted });
+// Asincrono
+export const eventStartDelete = () => {
+
+    return async (dispatch, getState) => {
+
+        const { _id } = getState().calendar.activeEvent;
+
+        try {
+            
+        
+   
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: 'Esto no será revertible!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar!'
+                }).then(async (result) => { 
+                if (result.isConfirmed) {
+                    const resp = await fetchWithToken(`events/${ _id }`, {}, 'DELETE');
+                    const body = await resp.json();
+
+                    if (body.ok){
+                        dispatch(eventDeleted());
+                        Swal.fire(
+                            'Eliminado!',
+                            'El evento ha sido eliminado correctamente.',
+                            'success'
+                        )
+                    }
+                    
+                }
+                });
+                
+
+        } catch (error) {
+            console.log(error);
+        }
+               
+    }
+
+}
+
+// sincrono
+const eventDeleted = () => ({ type: types.eventDeleted });
+
+export const eventCleared = () => ({ type: types.eventClear });

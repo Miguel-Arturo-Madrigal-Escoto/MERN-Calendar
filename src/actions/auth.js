@@ -3,6 +3,7 @@ import { googleAuthProvider, githubAuthProvider } from '../firebase/config';
 import { getAuth, signInWithPopup } from 'firebase/auth';
 import { fetchWithoutToken, fetchWithToken } from '../helpers/fetch';
 import { types } from '../types/types';
+import { eventCleared } from './calendar';
 //import { fetchWithoutTokenAxios } from '../helpers/fetchAxios';
 
 export const startLogin = (email, password) => {
@@ -60,7 +61,7 @@ export const startRegister = (name, email, password) => {
                 dispatch(login({
                     uid: body.uid,
                     name: body.name
-                }))
+                }));
                 
             } else {
                 const error = body.errors? body.errors.email.msg : body.msg;
@@ -187,16 +188,16 @@ export const startChecking = () => {
             dispatch(login({
                 uid: body.uid,
                 name: body.name
-            }))
+            }));
             
         }
-        else {
+        /* else {
             Swal.fire(
                 'Error',
                 body.msg,
                 'error'
             )
-        }
+        } */
 
         dispatch(checkingFinish());
     }
@@ -213,9 +214,10 @@ export const startLogout = () => {
     return (dispatch) => {
         const tokenLocalStorage = !!(localStorage.getItem('token') || '')
         const tokenInitDateLocalStorage = !!(localStorage.getItem('token-init-date') || '')
-        if (tokenLocalStorage){
+        if (tokenLocalStorage && tokenInitDateLocalStorage){
             localStorage.removeItem('token');
             localStorage.removeItem('token-init-date');
+            dispatch(eventCleared());
             dispatch(logout());
         }
     }

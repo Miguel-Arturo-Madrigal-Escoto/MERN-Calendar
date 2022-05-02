@@ -9,7 +9,7 @@ const fetchWithoutTokenAxios = ( endpoint, data, method = 'GET') => {
 
     switch (method) {
         case 'GET':
-            return;
+            return fetch(url);
     
         case 'POST':
             return axios.post(url, data, {

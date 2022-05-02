@@ -1,14 +1,14 @@
 import React from 'react';
 import { AiFillDelete } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import { eventDeleted } from '../../actions/calendar';
+import { eventStartDelete } from '../../actions/calendar';
 
 export const DeleteEventFab = () => {
 
     const dispatch = useDispatch();
 
     const handleClickDelete = () => {
-        dispatch(eventDeleted());
+        dispatch(eventStartDelete());
     }
 
     return (

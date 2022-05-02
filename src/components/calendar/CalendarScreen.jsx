@@ -8,7 +8,7 @@ import { messages } from '../../helpers/calendar-messages-es';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventAllDay, eventSetActive, eventStartLoading } from '../../actions/calendar';
+import { eventSetActive, eventStartLoading } from '../../actions/calendar';
 import { AddNewFab } from '../ui/AddNewFab';
 import { DeleteEventFab } from '../ui/DeleteEventFab';
 import moment from 'moment';
@@ -94,7 +94,6 @@ export const CalendarScreen = () => {
           dispatch(eventSetActive(event));
           dispatch(uiOpenModal());
       }
-
   }
 
   //TODO: al hacer doble click en una celda del calendario, abrir el modal para agregar un nuevo evento con la fecha seleccionada
